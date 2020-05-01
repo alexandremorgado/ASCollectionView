@@ -225,12 +225,12 @@ internal struct ASSectionDataSource<DataCollection: RandomAccessCollection, Data
 		getDropItem(from: dragItem) != nil
 	}
 
-	func getDropItem(from dragItem: UIDragItem) -> Data?
+    func getDropItem(from dragItem: UIDragItem, destinationIndex: Int? = nil) -> Data?
 	{
 		guard dropEnabled else { return nil }
 
 		let sourceItem = dragItem.localObject as? Data
-		return dragDropConfig.dropItemProvider?(sourceItem, dragItem) ?? sourceItem
+        return dragDropConfig.dropItemProvider?(sourceItem, dragItem, destinationIndex) ?? sourceItem
 	}
 
 	func getItemID<SectionID: Hashable>(for dragItem: UIDragItem, withSectionID sectionID: SectionID) -> ASCollectionViewItemUniqueID?
@@ -246,7 +246,7 @@ internal struct ASSectionDataSource<DataCollection: RandomAccessCollection, Data
 
 	func applyInsert(items: [UIDragItem], at index: Int)
 	{
-		let actualItems = items.compactMap(getDropItem(from:))
+        let actualItems = items.compactMap { getDropItem(from: $0, destinationIndex: index) }
 		let allDataIDs = Set(dragDropConfig.dataBinding?.wrappedValue.map { $0[keyPath: dataIDKeyPath] } ?? [])
 		let noDuplicates = actualItems.filter { !allDataIDs.contains($0[keyPath: dataIDKeyPath]) }
 #if DEBUG
