@@ -35,7 +35,7 @@ public extension ASDragDropConfig
 		return this
 	}
     
-    func dropItemProvider(_ provider: @escaping ((_ sourceItem: Data?, _ dragItem: UIDragItem, _ destinationIndex: Int?) -> Data?)) -> Self
+    func dropItemProvider(_ provider: @escaping ((_ sourceItem: Data?, _ dragItem: UIDragItem, _ destinationIndex: IndexPath?) -> Data?)) -> Self
     {
         var this = self
         this.dropEnabled = true

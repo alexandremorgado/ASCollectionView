@@ -543,10 +543,11 @@ public struct ASTableView<SectionID: Hashable>: UIViewControllerRepresentable, C
 				}
 				let safeDestinationIndex = min(destinationIndexPath.item, dragSnapshot.sections[destinationIndexPath.section].elements.endIndex)
 				dragSnapshot.insertItems(itemsToInsertIDs, atSectionIndex: destinationIndexPath.section, atOffset: destinationIndexPath.item)
-				destinationSection.dataSource.applyInsert(items: itemsToInsert.map { $0.dragItem }, at: safeDestinationIndex)
+                let safeDestinationIndexPath = IndexPath(item: safeDestinationIndex, section: destinationIndexPath.section)
+				destinationSection.dataSource.applyInsert(items: itemsToInsert.map { $0.dragItem }, at: safeDestinationIndexPath)
 
 			case .copy:
-				destinationSection.dataSource.applyInsert(items: coordinator.items.map { $0.dragItem }, at: destinationIndexPath.item)
+				destinationSection.dataSource.applyInsert(items: coordinator.items.map { $0.dragItem }, at: destinationIndexPath)
 
 			default: break
 			}
