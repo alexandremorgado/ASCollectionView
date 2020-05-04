@@ -21,5 +21,5 @@ public struct ASDragDropConfig<Data>
 	/// Return an item (of the same type as your section data) if you want to insert a row.
 	/// `sourceItem`: If the drop originated from a cell with the same data source, this will provide the original item that has been dragged
 	/// `dragItem`: This is the further information provided by UIKit. For example, if a drag came from another app, you could deal with that using this.
-    var dropItemProvider: ((_ sourceItem: Data?, _ dragItem: UIDragItem, _ destinationIndex: Int?) -> Data?)?
+    var dropItemProvider: ((_ sourceItem: Data?, _ dragItem: UIDragItem, _ destinationIndex: IndexPath?) -> Data?)?
 }

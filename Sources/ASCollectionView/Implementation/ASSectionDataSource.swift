@@ -23,7 +23,7 @@ internal protocol ASSectionDataSourceProtocol
 	func getDragItem(for indexPath: IndexPath) -> UIDragItem?
 	func getItemID<SectionID: Hashable>(for dragItem: UIDragItem, withSectionID sectionID: SectionID) -> ASCollectionViewItemUniqueID?
 	func applyRemove(atOffsets offsets: IndexSet)
-	func applyInsert(items: [UIDragItem], at index: Int)
+    func applyInsert(items: [UIDragItem], at indexPath: IndexPath)
 	func supportsDelete(at indexPath: IndexPath) -> Bool
 	func onDelete(indexPath: IndexPath, completionHandler: (Bool) -> Void)
 	func getContextMenu(for indexPath: IndexPath) -> UIContextMenuConfiguration?
@@ -225,7 +225,7 @@ internal struct ASSectionDataSource<DataCollection: RandomAccessCollection, Data
 		getDropItem(from: dragItem) != nil
 	}
 
-    func getDropItem(from dragItem: UIDragItem, destinationIndex: Int? = nil) -> Data?
+    func getDropItem(from dragItem: UIDragItem, destinationIndex: IndexPath? = nil) -> Data?
 	{
 		guard dropEnabled else { return nil }
 
@@ -244,7 +244,7 @@ internal struct ASSectionDataSource<DataCollection: RandomAccessCollection, Data
 		dragDropConfig.dataBinding?.wrappedValue.remove(atOffsets: offsets)
 	}
 
-	func applyInsert(items: [UIDragItem], at index: Int)
+	func applyInsert(items: [UIDragItem], at index: IndexPath)
 	{
         let actualItems = items.compactMap { getDropItem(from: $0, destinationIndex: index) }
 		let allDataIDs = Set(dragDropConfig.dataBinding?.wrappedValue.map { $0[keyPath: dataIDKeyPath] } ?? [])
@@ -253,7 +253,7 @@ internal struct ASSectionDataSource<DataCollection: RandomAccessCollection, Data
 		// Notify during debug build if IDs are not unique (programmer error)
 		if noDuplicates.count != actualItems.count { print("ASCOLLECTIONVIEW/ASTABLEVIEW: Attempted to insert an item with the same ID as one already in the section. This may cause unexpected behaviour.") }
 #endif
-		dragDropConfig.dataBinding?.wrappedValue.insert(contentsOf: noDuplicates, at: index)
+        dragDropConfig.dataBinding?.wrappedValue.insert(contentsOf: noDuplicates, at: index.item)
 	}
 
 	func getContextMenu(for indexPath: IndexPath) -> UIContextMenuConfiguration?
