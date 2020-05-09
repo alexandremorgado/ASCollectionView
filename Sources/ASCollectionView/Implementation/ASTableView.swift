@@ -110,7 +110,7 @@ public struct ASTableView<SectionID: Hashable>: UIViewControllerRepresentable, C
 
 		// MARK: Caching
 
-		private var autoCachingHostingControllers = ASPriorityCache<ASCollectionViewItemUniqueID, ASHostingControllerProtocol>()
+//		private var autoCachingHostingControllers = ASPriorityCache<ASCollectionViewItemUniqueID, ASHostingControllerProtocol>()
 		private var explicitlyCachedHostingControllers: [ASCollectionViewItemUniqueID: ASHostingControllerProtocol] = [:]
 		private var autoCachingSupplementaryHostControllers = ASPriorityCache<ASSupplementaryCellID<SectionID>, ASHostingControllerProtocol>()
 
@@ -196,10 +196,10 @@ public struct ASTableView<SectionID: Hashable>: UIViewControllerRepresentable, C
 				cell.itemID = itemID
 
 				// Update hostingController
-				let cachedHC = self.explicitlyCachedHostingControllers[itemID] ?? self.autoCachingHostingControllers[itemID]
+				let cachedHC = self.explicitlyCachedHostingControllers[itemID] // ?? self.autoCachingHostingControllers[itemID]
 				cell.hostingController = section.dataSource.updateOrCreateHostController(forItemID: itemID, existingHC: cachedHC)
 				// Cache the HC
-				self.autoCachingHostingControllers[itemID] = cell.hostingController
+				//self.autoCachingHostingControllers[itemID] = cell.hostingController
 				if section.shouldCacheCells
 				{
 					self.explicitlyCachedHostingControllers[itemID] = cell.hostingController
